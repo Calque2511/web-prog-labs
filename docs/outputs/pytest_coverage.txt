@@ -1,6 +1,6 @@
 $ .venv/Scripts/python -m pytest -W ignore --cov=app --cov=lab07
-........................................................................ [ 67%]
-...................................                                      [100%]
+........................................................................ [ 66%]
+.....................................                                    [100%]
 =============================== tests coverage ================================
 ______________ coverage: platform win32, python 3.12.10-final-0 _______________
 
@@ -13,7 +13,7 @@ app\deps.py                       43      0   100%
 app\errors.py                     55      2    96%
 app\examples.py                   18      0   100%
 app\infra.py                      74      1    99%
-app\logging_setup.py              20      1    95%
+app\logging_setup.py              22      0   100%
 app\main.py                       36      1    97%
 app\middleware.py                 46      0   100%
 app\models.py                     24      0   100%
@@ -32,5 +32,5 @@ lab07\__init__.py                  0      0   100%
 lab07\indexes.py                  73      5    93%
 lab07\transactions.py             98      4    96%
 --------------------------------------------------
-TOTAL                           1023     21    98%
-107 passed in 16.16s
+TOTAL                           1025     20    98%
+109 passed in 16.58s

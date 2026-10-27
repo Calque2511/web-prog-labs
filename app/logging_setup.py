@@ -1,14 +1,17 @@
 import contextvars
 import json
 import logging
+import time
 
 request_id_var: contextvars.ContextVar[str] = contextvars.ContextVar("request_id", default="-")
 
 
 class JsonFormatter(logging.Formatter):
+    converter = time.gmtime
+
     def format(self, record: logging.LogRecord) -> str:
         payload = {
-            "ts": self.formatTime(record, "%Y-%m-%dT%H:%M:%S"),
+            "ts": self.formatTime(record, "%Y-%m-%dT%H:%M:%SZ"),
             "level": record.levelname,
             "logger": record.name,
             "request_id": request_id_var.get(),
