@@ -1,0 +1,8 @@
+$ docker compose ps
+NAME                IMAGE                    COMMAND                  SERVICE      CREATED             STATUS                       PORTS
+labs-app-1          labs-app                 "uvicorn app.main:ap…"   app          2 minutes ago       Up 2 minutes (healthy)       8000/tcp
+labs-grafana-1      grafana/grafana:latest   "/run.sh"                grafana      About an hour ago   Up About an hour             0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+labs-nginx-1        nginx:alpine             "/docker-entrypoint.…"   nginx        About an hour ago   Up 2 minutes                 0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp
+labs-postgres-1     postgres:15-alpine       "docker-entrypoint.s…"   postgres     About an hour ago   Up About an hour (healthy)   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+labs-prometheus-1   prom/prometheus:latest   "/bin/prometheus --c…"   prometheus   About an hour ago   Up About an hour             0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+labs-redis-1        redis:7-alpine           "docker-entrypoint.s…"   redis        About an hour ago   Up About an hour             6379/tcp

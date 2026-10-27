@@ -1,0 +1,40 @@
+$ curl -v http://localhost/health
+* !!! WARNING !!!
+* This is a debug build of libcurl, do not use in production.
+* Uses proxy env variable no_proxy == 'localhost,127.0.0.1,::1,.local'
+* Host localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* connect to ::1 port 80 from :: port 64440 failed: Bad access
+*   Trying 127.0.0.1:80...
+* Established connection to localhost (127.0.0.1 port 80) from 127.0.0.1 port 64441 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+* sending last upload chunk of 79 bytes
+* Curl_xfer_send(len=79, eos=1) -> 0, 79
+> GET /health HTTP/1.1
+> Host: localhost
+> User-Agent: curl/8.23.0
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Tue, 27 Oct 2026 17:27:11 GMT
+< Content-Type: application/json
+< Content-Length: 15
+< Connection: keep-alive
+< x-request-id: 64162eec2239bc18278df909a8378e47
+< x-xss-protection: 1; mode=block
+< content-security-policy: default-src 'self'
+< vary: Origin
+< X-Frame-Options: SAMEORIGIN
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: no-referrer-when-downgrade
+< 
+{ [15 bytes data]
+100     15 100     15   0      0   2401      0                              0100     15 100     15   0      0   2364      0                              0100     15 100     15   0      0   2328      0                              0
+* Connection #0 to host localhost:80 left intact
+{"status":"ok"}

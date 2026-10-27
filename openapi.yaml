@@ -1,0 +1,1016 @@
+openapi: 3.1.0
+info:
+  title: Webprog Labs API
+  description: 'Учебный REST API: пользователи, заказы, аутентификация (JWT).'
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      tags:
+      - web
+      summary: Health
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Health Health Get
+  /set-cookie:
+    post:
+      tags:
+      - web
+      summary: Set Cookie
+      operationId: set_cookie_set_cookie_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CookieIn'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Set Cookie Set Cookie Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /get-cookie:
+    get:
+      tags:
+      - web
+      summary: Get Cookie
+      operationId: get_cookie_get_cookie_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Get Cookie Get Cookie Get
+  /delete-cookie:
+    post:
+      tags:
+      - web
+      summary: Delete Cookie
+      operationId: delete_cookie_delete_cookie_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CookieIn'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Delete Cookie Delete Cookie Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /form:
+    get:
+      tags:
+      - web
+      summary: Form
+      operationId: form_form_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+  /submit:
+    post:
+      tags:
+      - web
+      summary: Submit
+      operationId: submit_submit_post
+      parameters:
+      - name: origin
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Origin
+      - name: csrf_token
+        in: cookie
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Csrf Token
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_submit_submit_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /settings:
+    get:
+      tags:
+      - web
+      summary: Settings Get
+      operationId: settings_get_settings_get
+      security:
+      - HTTPBearer: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Settings Get Settings Get
+    post:
+      tags:
+      - web
+      summary: Settings Post
+      operationId: settings_post_settings_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: x-csrf-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Csrf-Token
+      - name: csrf_token
+        in: cookie
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Csrf Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Settings Post Settings Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /:
+    get:
+      tags:
+      - web
+      summary: Index
+      operationId: index__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/plain:
+              schema:
+                type: string
+  /auth/register:
+    post:
+      tags:
+      - auth
+      summary: Register
+      operationId: register_auth_register_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOut'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: Login
+      operationId: login_auth_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+  /auth/refresh:
+    post:
+      tags:
+      - auth
+      summary: Refresh
+      operationId: refresh_auth_refresh_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+  /auth/logout:
+    post:
+      tags:
+      - auth
+      summary: Logout
+      operationId: logout_auth_logout_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/RefreshRequest'
+              - type: 'null'
+              title: Body
+      responses:
+        '204':
+          description: Successful Response
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+      security:
+      - HTTPBearer: []
+  /auth/profile:
+    get:
+      tags:
+      - auth
+      summary: Profile
+      operationId: profile_auth_profile_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOut'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+      security:
+      - HTTPBearer: []
+  /users:
+    post:
+      tags:
+      - users
+      summary: Create User
+      operationId: create_user_users_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOut'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+    get:
+      tags:
+      - users
+      summary: List Users
+      operationId: list_users_users_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Size
+      - name: q
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          description: Поиск по имени/email
+          title: Q
+        description: Поиск по имени/email
+      - name: min_age
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - type: 'null'
+          title: Min Age
+      - name: max_age
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            maximum: 150
+          - type: 'null'
+          title: Max Age
+      - name: sort
+        in: query
+        required: false
+        schema:
+          enum:
+          - id
+          - -id
+          - name
+          - -name
+          - age
+          - -age
+          - created_at
+          - -created_at
+          type: string
+          default: id
+          title: Sort
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+  /users/{user_id}:
+    get:
+      tags:
+      - users
+      summary: Get User
+      operationId: get_user_users__user_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOut'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+    put:
+      tags:
+      - users
+      summary: Replace User
+      operationId: replace_user_users__user_id__put
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserReplace'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOut'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+    patch:
+      tags:
+      - users
+      summary: Patch User
+      operationId: patch_user_users__user_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPatch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOut'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+    delete:
+      tags:
+      - users
+      summary: Delete User
+      operationId: delete_user_users__user_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      responses:
+        '204':
+          description: Successful Response
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+  /users/{user_id}/orders:
+    get:
+      tags:
+      - users
+      summary: List Orders
+      operationId: list_orders_users__user_id__orders_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderOut'
+                title: Response List Orders Users  User Id  Orders Get
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+    post:
+      tags:
+      - users
+      summary: Create Order
+      operationId: create_order_users__user_id__orders_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderOut'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '409':
+          description: Conflict
+        '422':
+          description: Business rule violation
+components:
+  schemas:
+    Body_submit_submit_post:
+      properties:
+        message:
+          type: string
+          maxLength: 500
+          title: Message
+        csrf_token:
+          type: string
+          title: Csrf Token
+      type: object
+      required:
+      - message
+      - csrf_token
+      title: Body_submit_submit_post
+    CookieIn:
+      properties:
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9_\-]{1,64}$
+          title: Name
+        value:
+          type: string
+          maxLength: 200
+          title: Value
+        days:
+          anyOf:
+          - type: integer
+            maximum: 365.0
+            minimum: 0.0
+          - type: 'null'
+          title: Days
+          description: None/0 — сессионная cookie
+      type: object
+      required:
+      - name
+      - value
+      title: CookieIn
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LoginRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        password:
+          type: string
+          maxLength: 72
+          minLength: 1
+          title: Password
+      type: object
+      required:
+      - email
+      - password
+      title: LoginRequest
+    OrderCreate:
+      properties:
+        product:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Product
+        total:
+          type: number
+          maximum: 10000000.0
+          exclusiveMinimum: 0.0
+          title: Total
+      additionalProperties: false
+      type: object
+      required:
+      - product
+      - total
+      title: OrderCreate
+    OrderOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        user_id:
+          type: integer
+          title: User Id
+        product:
+          type: string
+          title: Product
+        total:
+          type: number
+          title: Total
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - user_id
+      - product
+      - total
+      - created_at
+      title: OrderOut
+    Page:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/UserOut'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+      type: object
+      required:
+      - items
+      - total
+      - page
+      - size
+      title: Page
+    RefreshRequest:
+      properties:
+        refresh_token:
+          type: string
+          title: Refresh Token
+      type: object
+      required:
+      - refresh_token
+      title: RefreshRequest
+    TokenPair:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        refresh_token:
+          type: string
+          title: Refresh Token
+        token_type:
+          type: string
+          title: Token Type
+          default: bearer
+        expires_in:
+          type: integer
+          title: Expires In
+      type: object
+      required:
+      - access_token
+      - refresh_token
+      - expires_in
+      title: TokenPair
+    UserCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 2
+          title: Name
+          examples:
+          - John Doe
+        email:
+          type: string
+          format: email
+          title: Email
+        age:
+          type: integer
+          maximum: 120.0
+          minimum: 18.0
+          title: Age
+        password:
+          type: string
+          maxLength: 72
+          minLength: 8
+          title: Password
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      - email
+      - age
+      - password
+      title: UserCreate
+    UserOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        email:
+          type: string
+          format: email
+          title: Email
+        age:
+          type: integer
+          title: Age
+        role:
+          type: string
+          title: Role
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - name
+      - email
+      - age
+      - role
+      - created_at
+      title: UserOut
+    UserPatch:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 50
+            minLength: 2
+            examples:
+            - John Doe
+          - type: 'null'
+          title: Name
+        email:
+          anyOf:
+          - type: string
+            format: email
+          - type: 'null'
+          title: Email
+        age:
+          anyOf:
+          - type: integer
+            maximum: 120.0
+            minimum: 18.0
+          - type: 'null'
+          title: Age
+      additionalProperties: false
+      type: object
+      title: UserPatch
+    UserReplace:
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 2
+          title: Name
+          examples:
+          - John Doe
+        email:
+          type: string
+          format: email
+          title: Email
+        age:
+          type: integer
+          maximum: 120.0
+          minimum: 18.0
+          title: Age
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      - email
+      - age
+      title: UserReplace
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: access_token из POST /auth/login
+      scheme: bearer

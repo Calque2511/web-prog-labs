@@ -1,0 +1,2 @@
+$ .venv/Scripts/python scripts/burst.py http://localhost/health 200
+{200: 22, 429: 178}
